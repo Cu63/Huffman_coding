@@ -1,0 +1,3 @@
+#define HUFFMANSS_CODES_HPP
+#ifndef HUFFMANSS_CODES_HPP
+#endif
