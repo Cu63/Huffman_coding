@@ -1,5 +1,4 @@
 #include "../headers/huffmans_codes.hpp"
-#include <iostream>
 
 Huffmans_codes::Huffmans_codes() {
     file_name = "None";
@@ -10,9 +9,12 @@ Huffmans_codes::~Huffmans_codes() {
 
 Huffmans_codes::Huffmans_codes(std::string &f_name) {
     file_name = f_name;
-    for (int i = 0; i < 256; i++)
-        symbols_frequency[i] = 0;
+    for (int i = 0; i < 256; i++) {
+        symbols_frequency[i].count = 0;
+        symbols_frequency[i].c = char(i);
+    }
     count_symbols_frequency();
+    create_code_tree();
 }
 
 void Huffmans_codes::count_symbols_frequency() {
@@ -24,9 +26,23 @@ void Huffmans_codes::count_symbols_frequency() {
         return;
     }
     while (in.get(c)){
-        symbols_frequency[int(c)] += 1;
+        symbols_frequency[int(c)].count += 1;
     }
+    /*
     for (auto p : symbols_frequency)
         std::cout << p << " ";
+    std::cout << std::endl;
+    */
     in.close();
+}
+
+void Huffmans_codes::create_code_tree() {
+    std::sort(std::begin(symbols_frequency), std::end(symbols_frequency),
+            [](symbol a, symbol b){ return a.count >= b.count; });
+    
+    for (int i = 0; i < 255; i++) {
+        symbols_frequency[i].print();
+        std::cout << " ";
+    }
+    std::cout << '\n';
 }
