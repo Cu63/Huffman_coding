@@ -9,6 +9,7 @@ Huffmans_codes::~Huffmans_codes() {
 
 Huffmans_codes::Huffmans_codes(std::string &f_name) {
     file_name = f_name;
+    symbols_frequency.resize(256);
     for (int i = 0; i < 256; i++) {
         symbols_frequency[i].count = 0;
         symbols_frequency[i].c = char(i);
@@ -28,18 +29,15 @@ void Huffmans_codes::count_symbols_frequency() {
     while (in.get(c)){
         symbols_frequency[int(c)].count += 1;
     }
-    /*
-    for (auto p : symbols_frequency)
-        std::cout << p << " ";
-    std::cout << std::endl;
-    */
     in.close();
 }
 
 void Huffmans_codes::create_code_tree() {
-    std::sort(std::begin(symbols_frequency), std::end(symbols_frequency),
-            [](symbol a, symbol b){ return a.count >= b.count; });
-    
+    std::sort(symbols_frequency.begin(), symbols_frequency.end(),
+            [](const symbol &a, const symbol &b)
+            { return a.count > b.count; });
+
+    std::cout << "Sorted\n";
     for (int i = 0; i < 255; i++) {
         symbols_frequency[i].print();
         std::cout << " ";

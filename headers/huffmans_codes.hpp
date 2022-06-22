@@ -6,6 +6,7 @@
 #include <array>
 #include <utility>
 #include <iostream>
+#include <vector>
 
 class Huffmans_codes {
     private:
@@ -15,12 +16,24 @@ class Huffmans_codes {
             int code;
 
             void print() {
-                std::cout << c << ": " << count;
+                if (uint(c) > 33)
+                    std::cout << "\'" << c << "\': ";
+                else
+                    std::cout << "\'" << uint(c) << "\': ";
+                std::cout << count;
             };
+
         } symbol;
 
+        typedef struct s_node {
+            symbol c;
+            struct s_node &left;
+            struct s_node &right;
+        } node;
+
+
         std::string file_name;
-        symbol symbols_frequency[256];
+        std::vector<symbol> symbols_frequency;
 
     public:
         Huffmans_codes(std::string &f_name);
